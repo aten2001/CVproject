@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><head>  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Computer Vision Class Project
+  | CS, Georgia Tech | Fall 2019: CS 6476</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+<!-- Le styles -->  
+  <link href="css/bootstrap.css" rel="stylesheet">
+<style>
+body {
+padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.vis {
+color: #3366CC;
+}
+.data {
+color: #FF9900;
+}
+</style>
+  
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container">
+<div class="page-header">
+
+<!-- Title and Name --> 
+<h1>Human Emotion Classifier</h1> 
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Tarushree Gandhi: 903527176, Zayra Lobo: 903054233, Sanmeshkumar Udhayakumar: 902969263</strong></span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Fall 2019 CS 6476 Computer Vision: Class Project</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
+<hr>
+
+<!-- Goal -->
+<h3>Abstract</h3>
+
+The goal of our project is to create a human emotion classifier for images. For example, if an image is of a person with a sad expression, the classifier should output that the detected emotion is sadness. We will classify emotions based on the labels provided in the CK+ database, which provides eight emotion labels based on facial expression. Our system will take in an image of a person’s face as the input and output one of the eight emotions associated with the detected expression on the person’s face.
+<br><br>
+<!-- figure -->
+<h3>Teaser Output Image (from <a href="https://towardsdatascience.com/face-detection-recognition-and-emotion-detection-in-8-lines-of-code-b2ce32d4d5de">this article</a>)</h3>
+
+<br><br>
+<!-- Main Illustrative Figure --> 
+<div style="text-align: center;">
+<img style="height: 400px;" alt="" src="mainfig.jpeg">
+</div>
+
+<br><br>
+<!-- Introduction -->
+<h3>Introduction</h3>
+Customer feedback is an important mechanism for businesses to continue to improve, but filling out surveys in order to provide such feedback is often perceived as a nuisance to customers. If businesses could instead detect the emotion of their customers by simply taking an image of their face while they speak with customer service, then the customers would be able to save time by not filling out a survey and the business would be able to collect more feedback. Thus, we are implementing a human emotion classifier for a headshot photograph of a person. Our classifier will use RGB photographs as input, and we will be using the CK database along with machine learning techniques in order to create our classifer.
+
+<!--Motivation behind the problem you are solving, what applications it has, any brief background on the particular domain you are working in (if not regular RBG photographs), etc. If you are using a new way to solve an existing problem, briefly mention and describe the existing approaches and tell us how your approach is new.-->
+
+<br><br>
+<!-- Approach -->
+<h3>Approach</h3>
+
+<b>1. Face cropping:</b> The face will be cropped from the headshot image, as that is the indicator of emotion we will be using. In order to do this, we will use the Haar Cascade classifier. Image preprocessing, including denoising, might also have to be employed to increase accuracy.
+<br><br>
+<b>2. Facial feature extraction:</b> We will extract features from the cropped face using Scale-Invariant Feature Transform (SIFT) descriptor.
+<br><br>
+<b>3. Clustering the features and BoW featurization:</b> We will cluster the features using kmeans in order to get K-representative “visual words”. We will then transform this in a bag-of-words representation as a histogram of the occurrence of these words on feature clusters. This is to represent the features in an image in a compact vector.
+<br><br>
+<b>4. SVM Classification:</b> Finally, we will train the labelled dataset on the emotion classes using SVM classifier. 70% of the dataset will used as a training set, 20% as validation set, and the rest 10% as the test set. 
+<br><br>
+<b>5. Model Evaluation on Test dataset:</b> We will test the emotion classifier on the remaining 10% of the test dataset.
+
+<!--Describe very clearly and systematically your approach to solve the problem. Tell us exactly what existing implementations you used to build your system. Tell us what obstacles you faced and how you addressed them. Justify any design choices or judgment calls you made in your approach.-->
+
+<br><br>
+<!-- Results -->
+<h3>Experiment and Results</h3>
+For our experimental setup, we will use the CK+ (Extended Cohn-Kanade Dataset) database that is publicly available. It is a database of images of closeups of different people’s faces, with 8 different emotion labels: neutral, sadness, surprise, happiness, fear, anger, contempt and disgust. 
+<br><br>
+For the image preprocessing step where faces are cropped and normalized, we will exploit the <a href="https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_alt.xml">Haar Cascade face classifier code set</a>, which is a trained classifier for detecting objects, including faces. 
+In order to extract features from the face in the previous step using SIFT, we will try to exploit the OpenCV SIFT functions. For kmeans clustering, we will use the kmeans function from the sklearn python library. For VLAD featurize vectorization, we will use <a href="https://github.com/jorjasso/VLAD">this VLAD code base</a>. We will be implementing BoW Featurization and SVM ourselves.
+<br><br>
+Our experiment will run as follows. We will have our emotion classifier try to identify human emotions for a set of images that our machine learning model hasn’t trained on. This experiment will reveal how accurate our emotion classifier is at identifying human emotions from images. The set we will test on will have to be large enough to not have results biased towards identifying only a certain group of people, and this set sample size will be determined as we further explore the CK+ dataset. What we would define as success for this experiment is correctly identifying 50% of these images. This % of accuracy is tentative, as we aren't sure how accurate our human classifier will end up being in the limited time we have.
+
+<!--Provide details about the experimental set up (number of images/videos, number of datasets you experimented with, train/test split if you used machine learning algorithms, etc.). Describe the evaluation metrics you used to evaluate how well your approach is working. Include clear figures and tables, as well as illustrative qualitative examples if appropriate. Be sure to include obvious baselines to see if your approach is doing better than a naive approach (e.g. for classification accuracy, how well would a classifier do that made random decisions?). Also discuss any parameters of your algorithms, and tell us how you set the values of those parameters. You can also show us how the performance varies as you change those parameter values. Be sure to discuss any trends you see in your results, and explain why these trends make sense. Are the results as expected? Why?-->
+
+<br><br>
+
+
+  <hr>
+  <footer> 
+  <p>© Gandhi, Lobo, Udhayakumar</p>
+  </footer>
+</div>
+</div>
+
+<br><br>
+
+</body></html>

@@ -42,8 +42,7 @@ color: #FF9900;
 
 <!-- Goal -->
 <h3>Abstract</h3>
-
-The goal of our project is to create a human emotion classifier for images. For example, if an image is of a person with a sad expression, the classifier should output that the detected emotion is sadness. We will classify emotions based on the labels provided in the CK database, which provides eight emotion labels based on facial expression. Our system will take in an image of a person’s face as the input and output one of the eight emotions associated with the detected expression on the person’s face.
+The goal of our project is to create a human emotion classifier for headshot images of people. For example, if the input is an image of a person with a sad expression, the classifier should output that the detected emotion is sadness. The motivation behind solving this problem is to automatically detect undesired human emotion that can further be used as a feedback to improve systems that use human emotions, for example customer satisfaction. This can be applied to businesses automatically being alerted about customers being unsatisfied with their service. The approach involves using the CK+ dataset of facial emotion images (which provides eight emotion labels based on facial expression), detecting and cropping the face from the image, extracting the facial descriptors in the images using Scale-Invariant Feature Transform (SIFT) descriptors, clustering and creating a bag of words description histogram of each image, and then training an SVM model to identify human emotions based on these bag of words description histograms. We have completed all these steps so far, except for training the SVM model and we have presented a proof of concept correlation experiment with the histograms to see if they have the potential to classify emotions. The main result we have obtained so far is that except for a few cases, the histograms have the potential to classify emotions, indicating that feeding these histograms to an SVM model will potentially lead to the SVM model successfully classifying the histograms into different emotions.
 <br><br>
 <!-- figure -->
 <h3>Teaser Output Image (from <a href="https://towardsdatascience.com/face-detection-recognition-and-emotion-detection-in-8-lines-of-code-b2ce32d4d5de">this article</a>)</h3>
@@ -57,7 +56,7 @@ The goal of our project is to create a human emotion classifier for images. For 
 <br><br>
 <!-- Introduction -->
 <h3>Introduction</h3>
-Customer feedback is an important mechanism for businesses to continue to improve, but filling out surveys in order to provide such feedback is often perceived as a nuisance to customers. If businesses could instead detect the emotion of their customers by simply taking an image of their face while they speak with customer service, then the customers would be able to save time by not filling out a survey and the business would be able to collect more feedback. Thus, we are implementing a human emotion classifier for a headshot photograph of a person. Our classifier will use RGB photographs as input, and we will be using the CK database along with machine learning techniques in order to create our classifer. We will report the overall accuracy of our classifier and the accuracy on a class-by-class basis so that we make observations such as which emotion is most difficult to classify based on this dataset.
+Customer feedback is an important mechanism for businesses to continue to improve, but filling out surveys in order to provide such feedback is often perceived as a nuisance to customers. If businesses could instead detect the emotion of their customers by simply taking an image of their face while they speak with customer service, then the customers would be able to save time by not filling out a survey and the business would be able to collect more feedback. Thus, we are implementing a human emotion classifier for a headshot photograph of a person. Our classifier will use grayscale photographs as input, and we will be using the CK+ database along with machine learning techniques in order to create our classifer. We will report the overall accuracy of our classifier and the accuracy on a class-by-class basis so that we make observations such as which emotion is most difficult to classify based on this dataset.
 
 <!--Motivation behind the problem you are solving, what applications it has, any brief background on the particular domain you are working in (if not regular RBG photographs), etc. If you are using a new way to solve an existing problem, briefly mention and describe the existing approaches and tell us how your approach is new.-->
 
@@ -65,14 +64,18 @@ Customer feedback is an important mechanism for businesses to continue to improv
 <!-- Approach -->
 <h3>Approach</h3>
 
+<ol>
+<li><b>CK+ Database:</b> For our experimental setup, we used the CK+ (Extended Cohn-Kanade Dataset) database that is publicly available. It contains grayscale images of closeups of different people’s faces, with 8 different emotion labels: neutral, sadness, surprise, happiness, fear, anger, contempt and disgust. 
+</li>
 <!-- Original Image --> 
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="originalImage.png">
 </div>
-
 <br>
 
-<b>1. Face cropping:</b> The face is cropped from the headshot image, as that is the indicator of emotion we will be using. In order to implement Face Detection, we used the Haar Cascade classifier to get the face coordinates. Then, we cropped the face using these coordinates. Image preprocessing, including denoising, might also have to be employed to increase the classifier accuracy.
+<li><b>Face cropping:</b> The face is cropped from the headshot image, as that is the indicator of emotion we will be using. In order to implement Face Detection, we used the Haar Cascade classifier to get the face coordinates. Then, we cropped the face using these coordinates. Image preprocessing, including denoising, might also have to be employed to increase the classifier accuracy.
+<br><br>
+For the image preprocessing step where faces are cropped and normalized, we exploited the <a href="https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_alt.xml">Haar Cascade face classifier code set</a>, which is a trained classifier for detecting objects, including faces. 
 
 <br><br>
 <!-- Cropped Image --> 
@@ -80,8 +83,8 @@ Customer feedback is an important mechanism for businesses to continue to improv
 <img style="height: 300px;" alt="" src="faceCroppedImage.png">
 </div>
 <br>
-
-<b>2. Facial feature extraction:</b> We extracted features from the cropped face using Scale-Invariant Feature Transform (SIFT) descriptor.
+</li>
+<li><b>Facial feature extraction:</b> We extracted features from the cropped face using Scale-Invariant Feature Transform (SIFT) descriptors. In order to extract these descriptors, we exploited the OpenCV SIFT functions.
 
 <br><br>
 <!-- SIFT Keypoints Image --> 
@@ -89,8 +92,8 @@ Customer feedback is an important mechanism for businesses to continue to improv
 <img style="height: 300px;" alt="" src="siftKeypointsImage.png">
 </div>
 <br>
-
-<b>3. Clustering the features and BoW featurization:</b> We clustered the features using kmeans in order to get K-representative “visual words”. We then transformed this in a bag-of-words representation as a histogram of the occurrence of these words on feature clusters. This is to represent the features of an image in a compact vector.
+</li>
+<li><b>Clustering the features and BoW featurization:</b> We clustered the features using Python's sklearn kmeans in order to get K-representative “visual words”. We then transformed this in a bag-of-words representation as a histogram of the occurrence of these words on feature clusters. This is to represent the features of an image in a compact vector.
 <br><br>
 It should be noted that the histogram below only has five clusters, but the final version of our classifier will likely have many more.
 
@@ -99,27 +102,197 @@ It should be noted that the histogram below only has five clusters, but the fina
 <img style="height: 300px;" alt="" src="histogramHappy.png">
 </div>
 <br>
+</li>
+<li><b>SVM Classification:</b> Finally, we will train the labelled dataset on the emotion classes using Python's sklearn SVM classifier. 70% of the dataset will used as a training set, 20% as validation set, and the rest 10% as the test set. 
+</li>
+<li><b>Model Evaluation on Test dataset:</b> We will test the emotion classifier on the remaining 10% of the test dataset.</li>
+</ol>
 
-<b>4. SVM Classification:</b> Finally, we will train the labelled dataset on the emotion classes using SVM classifier. 70% of the dataset will used as a training set, 20% as validation set, and the rest 10% as the test set. 
+When we use VLAD featurize vectorization in the future, we will use <a href="https://github.com/jorjasso/VLAD">this VLAD code base</a>.
 <br><br>
-<b>5. Model Evaluation on Test dataset:</b> We will test the emotion classifier on the remaining 10% of the test dataset.
-
+We decided to use SIFT for feature detection and BoW for featurization because an approach using these methods for human emotion classification has already been designed and used successfully, as can be seen <a href="https://towardsdatascience.com/classifying-facial-emotions-via-machine-learning-5aac111932d3#6c7a">here.</a> 
+<br><br>
+One obstacle we encountered while developing this approach was finding the whole set of images for each emotion, because each image for a particular emotion is in a random directory. Also the emotion labels for each image is in a different but correlated directory from the actual image, so we had to write script that would manually go through the directory of images and create a text file of directory paths of images for each emotion. For example, a text file called “anger.txt” would have all the image paths for angry emotion images.
 <!--Describe very clearly and systematically your approach to solve the problem. Tell us exactly what existing implementations you used to build your system. Tell us what obstacles you faced and how you addressed them. Justify any design choices or judgment calls you made in your approach.-->
 
 <br><br>
 <!-- Results -->
-<h3>Initial Results (Proof-of-Concept)</h3>
-As a proof-of-concept, we computed the BoW featurizations of 10 "happy" images, 10 "sad" images, and another 10 "happy" images. We then calculated the correlation between the two "happy" sets of histograms and one "happy" and the "sad" set to ensure that the two "happy" sets were more correlated than the "happy" and "sad" sets. Below are the results.
-
 <h3>Experiment and Results</h3>
-For our experimental setup, we will use the CK (Cohn-Kanade Dataset) database that is publicly available. It is a database of grayscale images of closeups of different people’s faces, with 8 different emotion labels: neutral, sadness, surprise, happiness, fear, anger, contempt and disgust. 
+ 
+<h4>Proof-of-Concept Results</h4>
+In order to create a proof-of-concept on whether the histograms of the descriptors in each image can indicate to machine learning models the type of emotion in that image, we selected three sets of images from the CK+ database:
 <br><br>
-For the image preprocessing step where faces are cropped and normalized, we will exploit the <a href="https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_alt.xml">Haar Cascade face classifier code set</a>, which is a trained classifier for detecting objects, including faces. 
-In order to extract features from the face in the previous step using SIFT, we will try to exploit the OpenCV SIFT functions. For kmeans clustering, we will use the kmeans function from the sklearn python library. For VLAD featurize vectorization, we will use <a href="https://github.com/jorjasso/VLAD">this VLAD code base</a>. We will be implementing BoW Featurization ourselves, and we will be using Python's scikit-learn SVM implementation.
+Set1 = 20 happy emotion images
+<br>
+Set2 = 20 other happy emotion images
+<br>
+Set3 = 20 sad emotion images
 <br><br>
-Our experiment will run as follows. We will have our emotion classifier try to identify human emotions for a set of images that our machine learning model hasn’t trained on. This experiment will reveal how accurate our emotion classifier is at identifying human emotions from images. The set we will test on will have to be large enough to not have results biased towards identifying only a certain group of people, and this set sample size will be determined as we further explore the CK dataset. What we would define as success for this experiment is correctly identifying 50% of these images. This % of accuracy is tentative, as we aren't sure how accurate our human classifier will end up being in the limited time we have.
+The descriptors in the combined set of these images were clustered into 20 clusters in order to perform dimension reduction and keep the bag of words description of each image small. Then a histogram was created for each image of the total number of each "word" present in that image.
+<br><br>
+Then we measured the correlation between the following using the numpy corrcoef() function:
+<br><br>
+<b>Set1 and Set2 (Set1_2 correlation):</b> We expect this to be a high correlation close to 1, cause they are all happy images.
+<br>
+<b>Set1 and Set3 (Set1_3 correlation):</b> We expect this to be a correlation lower than that of Set1_2, since Set1_3 is comparing sets of different emotions.
+<br>
+<b>Set2 and Set3 (Set2_3 correlation):</b> We expect this to be a correlation lower than that of Set1_2, since Set2_3 is comparing sets of different emotions.
+<br><br>
+Below are the correlation results for the two happy and one sadness data sets. The correlation was as expected, with the two sets of happy data sets being highly correlated while the correlation of either happy set with the sadness set was much lower. Examples of the input images with SIFT keypoints drawn on them and the histograms used for correlation can be found in the Qualitative Results section.
+<br><br>
+<b>Happy (Set 1) vs. Happy (Set 2) correlation:</b> 0.81 (highest correlation, close to 1)
+<br>
+<b>Happy (Set 1) vs. Sadness (Set 3) correlation:</b> 0.49 (lower than Set1_2)
+<br>
+<b>Happy (Set 2) vs. Sadness (Set 3) correlation:</b> 0.38 (lower than Set1_2)
+<br><br>
+Correlations were taken between some other random combinations of emotions as well, and in almost every case, the correlations were as expected. These results indicate that the histograms of the descriptors in each image can determine the type of emotion in an image.
+<br><br>
+Note that in the correlation table below, every three sets of rows follows the title format of "Set1_2 correlation", "Set1_3 correlation", and "Set2_3 correlation". Also note that the correlation of happy1happy2 in the happy vs. sadness column will be different than the happy1happy2  correlation in the happy vs. disgust column, because the data was clustered differently in each of the experiments.
 
+<br><br>
+<b>Observations:</b>
+<ol type="1">
+<li>We noticed as k clusters and number of images were increased, the correlation behaved in a more expected way. This makes sense because the more data there is available and the more clusters there are, the more accurately the descriptors can become labelled as features, and can represent the images better.</li>
+<li>The emotions that had the least correlation difference were emotions that were similar. For example, the disgust correlation in red between disgust and anger doesn’t behave as expected since it is bigger than the correlation between the two sets of disgust images. And disgust and anger are both negative emotions that can be similar. Meanwhile, disgust and surprise are more distinct emotions with 1 being negative and 1 being positive, and this is indicated by the large difference in correlation.</li>
+</ol>
+
+The table below displays the results for all of the correlation experiments we ran as a proof-of-concept. Each experiment compares 3 datasets of 20 images each. The largest correlation is colored in each experiment. This correlation is blue if it is the correlation that is expected to be the largest (correlation between sets of images of the same emotion) and red if this is not the case.
+
+<br><br>
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th>Exp no.</th>
+    <th>Emotions</th> 
+    <th>Correlation</th>
+    <th>Emotions</th> 
+    <th>Correlation</th>
+    <th>Emotions</th> 
+    <th>Correlation</th>
+  </tr>
+  <tr>
+    <td>Exp 1</td>
+    <td>Happy1,Happy2</td>
+    <td><font color="blue">0.81</font></td> 
+    <td>Happy1,Sad1</td>
+    <td>0.49</td>
+    <td>Happy2,Sad1</td>
+    <td>0.38</td>
+  </tr>
+  <tr>
+    <td>Exp 2</td>
+    <td>Happy1,Happy2</td>
+    <td><font color="blue">0.80</font></td> 
+    <td>Happy1,Disgust3</td>
+    <td>0.79</td>
+    <td>Happy2,Disgust3</td>
+    <td>0.55</td>
+  </tr>
+  <tr>
+    <td>Exp 3</td>
+    <td>Happy1,Happy2</td>
+    <td><font color="blue">0.86</font></td> 
+    <td>Happy1,Anger3</td>
+    <td>0.79</td>
+    <td>Happy2,Anger</td>
+    <td>0.79</td>
+  </tr>
+  <tr>
+    <td>Exp 4</td>
+    <td>Happy1,Happy2</td>
+    <td><font color="blue">0.88</font></td> 
+    <td>Happy1,Surprise3</td>
+    <td>0.54</td>
+    <td>Happy2,Surprise3</td>
+    <td>0.32</td>
+  </tr>
+  
+  <tr>
+    <td>Exp 5</td>
+    <td>Disgust1,Disgust2</td>
+    <td>0.82</td> 
+    <td>Disgust1,Anger3</td>
+    <td><font color="red">0.84</font></td>
+    <td>Disgust2,Anger3</td>
+    <td>0.81</td>
+  </tr>
+  
+  <tr>
+    <td>Exp 6</td>
+    <td>Disgust1,Disgust2</td>
+    <td><font color="blue">0.76</font></td> 
+    <td>Disgust1,Surprise3</td>
+    <td>0.64</td>
+    <td>Disgust2,Surprise3</td>
+    <td>0.39</td>
+  </tr>
+  
+  <tr>
+    <td>Exp 7</td>
+    <td>Disgust1,Disgust2</td>
+    <td><font color="blue">0.75</font></td> 
+    <td>Disgust1,Fear3</td>
+    <td>0.74</td>
+    <td>Disgust2,Fear3</td>
+    <td>0.57</td>
+  </tr>
+  
+   <tr>
+    <td>Exp 8</td>
+    <td>Disgust1,Disgust2</td>
+    <td><font color="blue">0.84</font></td> 
+    <td>Disgust1,Happy3</td>
+    <td>0.78</td>
+    <td>Disgust2,Happy3</td>
+    <td>0.72</td>
+  </tr>
+  
+</table>
+</center>
+<br><br>
+
+<h4>Final Experiment Plan</h4>
+Our final experiment will run as follows. We will have our emotion classifier try to identify human emotions for a set of images that our machine learning model hasn’t trained on. This experiment will reveal how accurate our emotion classifier is at identifying human emotions from images. The set we will test on will have to be large enough to not have results biased towards identifying only a certain group of people, and this set sample size will be determined as we further explore the CK+ dataset. What we would define as success for this experiment is correctly identifying 50% of these images. This % of accuracy is tentative, as we aren't sure how accurate our human classifier will end up being in the limited time we have.
+<br><br>
 <!--Provide details about the experimental set up (number of images/videos, number of datasets you experimented with, train/test split if you used machine learning algorithms, etc.). Describe the evaluation metrics you used to evaluate how well your approach is working. Include clear figures and tables, as well as illustrative qualitative examples if appropriate. Be sure to include obvious baselines to see if your approach is doing better than a naive approach (e.g. for classification accuracy, how well would a classifier do that made random decisions?). Also discuss any parameters of your algorithms, and tell us how you set the values of those parameters. You can also show us how the performance varies as you change those parameter values. Be sure to discuss any trends you see in your results, and explain why these trends make sense. Are the results as expected? Why?-->
+
+<h3>Qualitative Results</h3>
+
+<br><br>
+<h4><center>Happy Face Keypoints:</h4></center>
+<div style="text-align: center;">
+<img style="height: 300px;" alt="" src="happyFaceKeypoints.png">
+</div>
+<h4><center>Sadness Face Keypoints:</h4></center>
+<div style="text-align: center;">
+<img style="height: 300px;" alt="" src="sadnessFaceKeypoints.png">
+</div>
+<br><br>
+<h4><center>Histogram of Clusters of Descriptors in Each Set (Bag of Words)</h4></center>
+<div style="text-align: center;">
+<img style="height: 300px;" alt="" src="happyhistogram20set1.png">
+<img style="height: 300px;" alt="" src="happyhistogram20set2.png">
+<img style="height: 300px;" alt="" src="sadnesshistogram20set3.png">
+</div>
+
+<h3>Conclusion and Future Work</h3>
+<!--Conclusion would likely make the same points as the abstract. Discuss any future ideas you have to make your approach better.-->
+Overall, the correlation experiments show that the bag of words histograms created to describe each image can indicate to machine learning models the type of emotion in an image, three sets of images were taken. The next steps would be to actually get the bag of words histograms for all images and then feed that into SVM machine learning model to train it to identify the emotions in an image. We will experiment also with different number of clusters in the clustering step in order to make the machine learning model more accurate. 
+
+<br><br>
+
+<h3>References</h3>
+<a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html">OpenCV Tutorial on Face Detection using Haar Cascades</a>
+<br>
+<a href="https://towardsdatascience.com/classifying-facial-emotions-via-machine-learning-5aac111932d3#6c7a">Article about Classifying Human Emotions using Machine Learning</a>
+<br>
+<a href="https://docs.opencv.org/3.4/da/df5/tutorial_py_sift_intro.html">OpenCV Tutorial on SIFT</a>
+
+<br><br>
+
+<a href="project_proposal.html"><h3>Project Proposal</a></h3>
 
 <br><br>
   <hr>
