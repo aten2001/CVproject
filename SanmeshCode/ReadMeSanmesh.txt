@@ -1,0 +1,1 @@
+Remove file C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S076\001\S076_001_00000017.png
