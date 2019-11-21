@@ -1,0 +1,9 @@
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S133\003\S133_003_00000047.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S134\003\S134_003_00000011.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S136\005\S136_005_00000010.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S501\001\S501_001_00000067.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S502\001\S502_001_00000016.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S503\001\S503_001_00000071.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S504\001\S504_001_00000022.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S506\001\S506_001_00000040.png
+C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S999\001\S999_001_00000018.png
