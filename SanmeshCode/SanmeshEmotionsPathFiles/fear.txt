@@ -18,8 +18,3 @@ C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S1
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S125\006\S125_006_00000022.png
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S132\003\S132_003_00000023.png
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S138\001\S138_001_00000012.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S501\004\S501_004_00000056.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S502\004\S502_004_00000052.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S504\004\S504_004_00000015.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S506\004\S506_004_00000038.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S999\003\S999_003_00000055.png

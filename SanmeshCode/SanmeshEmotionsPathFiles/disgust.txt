@@ -45,15 +45,3 @@ C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S1
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S105\008\S105_008_00000010.png
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S106\004\S106_004_00000008.png
 C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S107\005\S107_005_00000011.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S108\006\S108_006_00000020.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S109\005\S109_005_00000014.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S111\007\S111_007_00000014.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S116\006\S116_006_00000007.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S124\006\S124_006_00000011.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S125\008\S125_008_00000010.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S128\004\S128_004_00000013.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S129\011\S129_011_00000018.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S130\012\S130_012_00000011.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S131\010\S131_010_00000018.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S132\005\S132_005_00000016.png
-C:/Users/sanme/Documents/CVproject-master/CVproject-master/cohn-kanade-images\S134\008\S134_008_00000013.png

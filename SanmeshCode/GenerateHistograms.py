@@ -104,35 +104,35 @@ if __name__ == '__main__':
 #####################################################################################
 #GENERATE HISTOGRAMS
 #####################################################################################
-    #load cluster centers
-    clusterCent = np.load('kmeansClusterCenters.npy')
-
-
-
-    for emotion in emotionsList:
-        print('reading from emotions file: ', emotion)
-        with open("SanmeshEmotionsPathFiles/"+ emotion+".txt","r+") as emotionFile:
-            for line in emotionFile:
-                # load that file
-                path = line
-                test_image = loadIm(path.strip())
-                
-                #crop faces from the images using haar_cascade classifier
-                face_cropped = cropFace(test_image)
-                
-                # Resize image to 256 x 256
-                face_cropped = cv2.resize(face_cropped, (256,256))
-
-                # SIFT
-                kp, des, imgKpDrawn = siftOut(face_cropped)
-
-                pairwiseDist = dist2.dist2(des,clusterCent)
-                labelsBuf= np.argmin(pairwiseDist, axis=1)
-                unique1, counts1 = np.unique(labelsBuf, return_counts=True)
-                hist1 = np.zeros(clusterCent.shape[0])
-                for j in range(unique1.shape[0]):
-                    hist1[unique1[j]] = counts1[j]
-                identifier = emotion+"Histograms/"+emotion+"_"+ line[-22:-5]
-                np.save(identifier, hist1)
-
-    plt.show()
+##    #load cluster centers
+##    clusterCent = np.load('kmeansClusterCenters.npy')
+##
+##
+##
+##    for emotion in emotionsList:
+##        print('reading from emotions file: ', emotion)
+##        with open("SanmeshEmotionsPathFiles/"+ emotion+".txt","r+") as emotionFile:
+##            for line in emotionFile:
+##                # load that file
+##                path = line
+##                test_image = loadIm(path.strip())
+##                
+##                #crop faces from the images using haar_cascade classifier
+##                face_cropped = cropFace(test_image)
+##                
+##                # Resize image to 256 x 256
+##                face_cropped = cv2.resize(face_cropped, (256,256))
+##
+##                # SIFT
+##                kp, des, imgKpDrawn = siftOut(face_cropped)
+##
+##                pairwiseDist = dist2.dist2(des,clusterCent)
+##                labelsBuf= np.argmin(pairwiseDist, axis=1)
+##                unique1, counts1 = np.unique(labelsBuf, return_counts=True)
+##                hist1 = np.zeros(clusterCent.shape[0])
+##                for j in range(unique1.shape[0]):
+##                    hist1[unique1[j]] = counts1[j]
+##                identifier = emotion+"Histograms/"+emotion+"_"+ line[-22:-5]
+##                np.save(identifier, hist1)
+##
+##    plt.show()
