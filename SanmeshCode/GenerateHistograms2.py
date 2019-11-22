@@ -11,8 +11,8 @@ from sklearn.cluster import KMeans
 ##%matplotlib inline
 
 #inputs
-perOfTotalDesc = 0.8
-k = 500
+perOfTotalDesc = 1
+k = 1000
 
 #functions:
 def convertFileNameToPicPath(name):
@@ -67,39 +67,39 @@ if __name__ == '__main__':
 #####################################################################################
 #GENERATE KMEANS CLUSTER CENTERS
 #####################################################################################
-##    totalDesc = np.zeros((1,128))
-##    for emotion in emotionsList:
-##        print('reading from emotions file: ', emotion)
-##        with open("SanmeshEmotionsPathFiles/"+ emotion+".txt","r+") as emotionFile:
-##            for line in emotionFile:
-##                # load that file
-##                path = line
-##                test_image = loadIm(path.strip())
-##
-####                if emotion == "surprise":
-####                    print(path)
-##                
-##                #crop faces from the images using haar_cascade classifier
-##                face_cropped = cropFace(test_image)
-##                
-##                # Resize image to 256 x 256
-##                face_cropped = cv2.resize(face_cropped, (256,256))
-##
-##                # SIFT
-##                kp, des, imgKpDrawn = siftOut(face_cropped)
-##
-##                #get random descriptors
-##                randomDescIndex = sample(list(range(des.shape[0])), int(perOfTotalDesc*des.shape[0]))
-##                randomDesc = des[randomDescIndex,:]    
-##                #append
-##                totalDesc = np.append(totalDesc, randomDesc,axis=0)
-##    totalDesc = totalDesc[1:,:]
-##    np.save("totalDesc", totalDesc)
-##    print("sizeOfAllDesc = ", totalDesc.shape)
-##
-##    kmeans = KMeans(n_clusters=k, random_state=0).fit(totalDesc)
-##    np.save("kmeansLabels", kmeans.labels_)
-##    np.save("kmeansClusterCenters", kmeans.cluster_centers_)
+    totalDesc = np.zeros((1,128))
+    for emotion in emotionsList:
+        print('reading from emotions file: ', emotion)
+        with open("SanmeshEmotionsPathFiles/"+ emotion+".txt","r+") as emotionFile:
+            for line in emotionFile:
+                # load that file
+                path = line
+                test_image = loadIm(path.strip())
+
+##                if emotion == "surprise":
+##                    print(path)
+                
+                #crop faces from the images using haar_cascade classifier
+                face_cropped = cropFace(test_image)
+                
+                # Resize image to 256 x 256
+                face_cropped = cv2.resize(face_cropped, (256,256))
+
+                # SIFT
+                kp, des, imgKpDrawn = siftOut(face_cropped)
+
+                #get random descriptors
+                randomDescIndex = sample(list(range(des.shape[0])), int(perOfTotalDesc*des.shape[0]))
+                randomDesc = des[randomDescIndex,:]    
+                #append
+                totalDesc = np.append(totalDesc, randomDesc,axis=0)
+    totalDesc = totalDesc[1:,:]
+    np.save("totalDesc", totalDesc)
+    print("sizeOfAllDesc = ", totalDesc.shape)
+
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(totalDesc)
+    np.save("kmeansLabels", kmeans.labels_)
+    np.save("kmeansClusterCenters", kmeans.cluster_centers_)
 
 #####################################################################################
 #GENERATE HISTOGRAMS
