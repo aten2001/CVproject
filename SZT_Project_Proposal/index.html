@@ -42,7 +42,7 @@ color: #FF9900;
 
 <!-- Goal -->
 <h3>Abstract</h3>
-The goal of our project is to create a human emotion classifier for headshot images of people. For example, if the input is an image of a person with a sad expression, the classifier should output that the detected emotion is sadness. The motivation behind solving this problem is to provide feedback to systems that try to illicit positive human emotions, such as customer service. Our approach involves using the CK+ dataset of facial emotion images (which provides eight emotion labels based on facial expression), detecting and cropping the face from the image, extracting the facial descriptors in the images using Scale-Invariant Feature Transform (SIFT) descriptors, clustering and creating a bag of words description histogram of each image, and then training an SVM model to identify human emotions based on these bag of words description histograms. We have completed all of these steps so far except for training the SVM model, and we have presented a proof-of-concept histogram correlation experiment to determine if the histograms have the potential to classify emotions. Our experiments revealed a stronger correlation between histograms of images with the same emotion than histograms of images with different emotions, indicating that feeding these histograms into an SVM model will potentially lead to the model successfully classifying the images.
+The goal of our project is to create a human emotion classifier for headshot images of people. For example, if the input is an image of a person with a sad expression, the classifier should output that the detected emotion is sadness. The motivation behind solving this problem is to provide feedback to systems that try to illicit positive human emotions, such as customer service. Our approach involves using the CK+ dataset of facial emotion images (which provides eight emotion labels based on facial expression), detecting and cropping the face from the image, extracting the facial descriptors in the images using Scale-Invariant Feature Transform (SIFT) descriptors, clustering and creating a bag of words description histogram of each image, and then training an SVM model to identify human emotions based on these bag of words description histograms. We were able to successfully classify over 70% of test images using this approach, and our primary limiting factor was likely the amount of training data we had for some emotion classes. We attempted to overcome the lack of data by augmenting the training dataset through techniques such as duplicating or flipping images to increase the size of the training data. INSERT MORE INFO ABOUT RESULTS OF DATA AUGMENTATION
 <br><br>
 <!-- figure -->
 <h3>Teaser Output Image (from <a href="https://towardsdatascience.com/face-detection-recognition-and-emotion-detection-in-8-lines-of-code-b2ce32d4d5de">this article</a>)</h3>
@@ -108,11 +108,11 @@ It should be noted that the histogram below only has five clusters, but the fina
 <li><b>Model Evaluation on Test Dataset:</b> We will test the emotion classifier on the remaining 10% of the test dataset.</li>
 </ol>
 
-If we use VLAD featurize vectorization in the future (due to "bag of words" being less accurate), we will use <a href="https://github.com/jorjasso/VLAD">this VLAD code base</a>.
-<br><br>
 We decided to use SIFT for feature detection and BoW for featurization because an approach using these methods for human emotion classification has already been designed and used successfully, as can be seen <a href="https://towardsdatascience.com/classifying-facial-emotions-via-machine-learning-5aac111932d3#6c7a">here.</a> 
 <br><br>
 One obstacle we encountered while developing this approach was finding the whole set of images for each emotion, because each image for a particular emotion is in a random directory. Also, the emotion labels for each image are in a different but correlated directory from the actual image, so we had to write a script that would manually go through the directory of images and create a text file of directory paths of images for each emotion. For example, a text file called “anger.txt” would have all the image paths for angry emotion images.
+<br><br>
+A lack of data was also a significant obstacle that we faced with this approach. Initially, our SVM model had poor accuracy on classifying emotions with significantly less data than other emotions, so we had to resort to data augmentation to try to improve the accuracy of our model.
 <!--Describe very clearly and systematically your approach to solve the problem. Tell us exactly what existing implementations you used to build your system. Tell us what obstacles you faced and how you addressed them. Justify any design choices or judgment calls you made in your approach.-->
 
 <br><br>
@@ -253,33 +253,596 @@ The table below displays the results for all of the correlation experiments we r
 </center>
 <br><br>
 
-<h4>Final Experiment Plan</h4>
-Our final experiment will run as follows. We will have our emotion classifier try to identify human emotions for a set of images that our machine learning model hasn’t trained on. This experiment will reveal how accurate our emotion classifier is at identifying human emotions from images. The set we will test on will have to be large enough to not have results biased towards identifying only a certain group of people, and this set sample size will be determined as we further explore the CK+ dataset. What we would define as success for this experiment is correctly identifying 50% of these images. This % of accuracy is tentative, as we aren't sure how accurate our human classifier will end up being in the limited time we have.
+<h4>Final Experiment Results</h4>
+For our final experiment, we first calculated the BoW histograms for each image in our dataset. Next, we used 80% of the data to train an SVM model and then used the model to predict the labels of the remaining 20% of the data. We defined success for this experiment as correctly identifying 50% of these images.
+
+<h5><u>Test 1: k = 500, 80/20 training/test data, no data augmentation</u></h5>
+We started out with 500 clusters for our BoW clustering. We then trained our SVM model on those BoW vectors and tested it on our remaining data. Unfortunately, not all of the emotion classes had the same amount of data available for us to train our model on. Our initial distribution of training and test data for each class was as follows:
+
 <br><br>
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th>Emotion</th>
+    <th>Number of Training Images</th>
+    <th>Number of Test Images</th>
+    <th>Total Number of Images</th>
+  </tr>
+  <tr>
+    <td>Anger</td>
+    <td>36</td>
+    <td>9</td>
+    <td>45</td>
+  </tr>
+  <tr>
+    <td>Contempt</td>
+    <td>14</td>
+    <td>4</td>
+    <td>18</td>
+  </tr>
+  <tr>
+    <td>Disgust</td>
+    <td>47</td>
+    <td>12</td>
+    <td>59</td>
+  </tr>
+  <tr>
+    <td>Fear</td>
+    <td>20</td>
+    <td>5</td>
+    <td>25</td>
+  </tr>
+  <tr>
+    <td>Happy</td>
+    <td>55</td>
+    <td>14</td>
+    <td>69</td>
+  </tr>
+  <tr>
+    <td>Sadness</td>
+    <td>22</td>
+    <td>6</td>
+    <td>28</td>
+  </tr>
+  <tr>
+    <td>Surprise</td>
+    <td>65</td>
+    <td>17</td>
+    <td>82</td>
+  </tr>
+</table>
+</center>
+
+<br>Due to the low number of samples for anger, contempt, fear, and sadness, we only achieved an overall accuracy of <b>56.72%.</b> The confusion matrix of our SVM classification was as follows:<br><br>
+
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th colspan="2" rowspan="2"></th>
+    <th colspan="7">Predicted Emotion</th>
+  </tr>
+  <tr>
+    <th>Anger</th>
+    <th>Contempt</th>
+    <th>Disgust</th>
+    <th>Fear</th>
+    <th>Happy</th>
+    <th>Sadness</th>
+    <th>Surprise</th>
+  </tr>
+  <tr>
+    <th rowspan="9">Actual Emotion</th>
+    <th>Anger</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <th>Contempt</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Disgust</td>
+    <td>0</td>
+    <td>0</td>
+    <td>11</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Fear</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Happy</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>11</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Sadness</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th>Surprise</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>15</td>
+  </tr>
+</table>
+</center>
+
+<br><br>
+
+Although our overall accuracy surpassed the 50% threshold that we defined as our success level, we wanted to see if we could improve the accuracy of our classifier. First, we tried to increase the number of clusters for our BoW vectors.
+
+<h5><u>Test 2: k = 1000, 80/20 training/test data, no data augmentation</u></h5>
+
+We hypothesized that increasing the number of clusters for our SIFT descriptors from 500 to 1000 would make our BoW vectors more detailed and thus more distinct for each emotion. However, we ended up achieving poorer accuracy, with an overall accuracy of <b>52.24%</b>. This decrease in accuracy, in spite of a supposed increase in the detail of the BoWs, could have been due to a lack of distinct SIFT descriptors for each emotion. If each emotion already did not have many descriptors specific to that class (perhaps due to a lack of training data), then increasing the number of clusters would not help increase the accuracy of classification. Below is the confusion matrix for 1000 clusters.
+
+<center>
+<br><br>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th colspan="2" rowspan="2"></th>
+    <th colspan="7">Predicted Emotion</th>
+  </tr>
+  <tr>
+    <th>Anger</th>
+    <th>Contempt</th>
+    <th>Disgust</th>
+    <th>Fear</th>
+    <th>Happy</th>
+    <th>Sadness</th>
+    <th>Surprise</th>
+  </tr>
+  <tr>
+    <th rowspan="9">Actual Emotion</th>
+    <th>Anger</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>2</td>
+    <td>0</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <th>Contempt</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th>Disgust</td>
+    <td>0</td>
+    <td>0</td>
+    <td>5</td>
+    <td>0</td>
+    <td>4</td>
+    <td>0</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Fear</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <th>Happy</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>14</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Sadness</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <th>Surprise</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>16</td>
+  </tr>
+</table>
+</center>
+<br><br>
+
+Because increasing the number of clusters did not improve our overall classification accuracy, we returned to using 500 clusters and tried to modify how we split our training and test data for the emotions with fewer samples.
+
+<h5><u>Test 3: k = 500, ~90/10 training/test data (for emotions with fewer samples), no data augmentation</u></h5>
+
+Because we seemed to be getting a lower overall accuracy due to some classes have less data to train the SVM model on, we tried moving all but a few samples from the test data for these classes to the training data. Below is the new breakdown of how we decided to split the data for these emotion classes, with the bolded rows being the emotions that changed from an 80/20 training/test split to closer to 90/10:
+
+<br><br>
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th>Emotion</th>
+    <th>Number of Training Images</th>
+    <th>Number of Test Images</th>
+    <th>Total Number of Images</th>
+  </tr>
+  <tr>
+    <td><b>Anger</b></td>
+    <td><b>42</b></td>
+    <td><b>3</b></td>
+    <td><b>45</b></td>
+  </tr>
+  <tr>
+    <td><b>Contempt</b></td>
+    <td><b>16</b></td>
+    <td><b>2</b></td>
+    <td><b>18</b></td>
+  </tr>
+  <tr>
+    <td>Disgust</td>
+    <td>47</td>
+    <td>12</td>
+    <td>59</td>
+  </tr>
+  <tr>
+    <td><b>Fear</b></td>
+    <td><b>23</b></td>
+    <td><b>2</b></td>
+    <td><b>25</b></td>
+  </tr>
+  <tr>
+    <td>Happy</td>
+    <td>55</td>
+    <td>14</td>
+    <td>69</td>
+  </tr>
+  <tr>
+    <td><b>Sadness</b></td>
+    <td><b>26</b></td>
+    <td><b>2</b></td>
+    <td><b>28</b></td>
+  </tr>
+  <tr>
+    <td>Surprise</td>
+    <td>65</td>
+    <td>17</td>
+    <td>82</td>
+  </tr>
+</table>
+</center>
+<br>
+
+Using this new training/test split for emotions with less data available, we observed an increase in overall accuracy to <b>71.15%.</b> Below is the confusion matrix corresponding with this new split of training and test data:
+
+<center>
+<br>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th colspan="2" rowspan="2"></th>
+    <th colspan="7">Predicted Emotion</th>
+  </tr>
+  <tr>
+    <th>Anger</th>
+    <th>Contempt</th>
+    <th>Disgust</th>
+    <th>Fear</th>
+    <th>Happy</th>
+    <th>Sadness</th>
+    <th>Surprise</th>
+  </tr>
+  <tr>
+    <th rowspan="9">Actual Emotion</th>
+    <th>Anger</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Contempt</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <th>Disgust</td>
+    <td>1</td>
+    <td>0</td>
+    <td>10</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Fear</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Happy</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>11</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Sadness</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Surprise</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>15</td>
+  </tr>
+</table>
+</center>
+<br>
+
+Though we observed an increase in the overall accuracy of our classifier, we knew that we were still not training or testing on many samples for the emotions with less data available. So, we next tried to increase the amount of training data we had available using data augmentation.
+
+<h5><u>Test 4: k = 500, 80/20 training/test data, data augmentation: repeated training images</u></h5>
+
+The first type of data augmentation that we tried was repeating the same training data multiple times in the training set till we got a number of samples similar to the number in the other classes. Prior to this repetition of data, some of the training data was moved back to the test set so that we could have an 80/20 split of the data for training/testing again. Below is the result of the data augmentation on the number of samples in each class (bolded rows are the emotions for which we augmented the data):
+
+<br><br>
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th>Emotion</th>
+    <th>Number of Training Images</th>
+    <th>Number of Test Images</th>
+    <th>Total Number of Images</th>
+  </tr>
+  <tr>
+    <td><b>Anger</b></td>
+    <td><b>44</b></td>
+    <td><b>11</b></td>
+    <td><b>55</b></td>
+  </tr>
+  <tr>
+    <td><b>Contempt</b></td>
+    <td><b>44</b></td>
+    <td><b>11</b></td>
+    <td><b>55</b></td>
+  </tr>
+  <tr>
+    <td>Disgust</td>
+    <td>47</td>
+    <td>12</td>
+    <td>59</td>
+  </tr>
+  <tr>
+    <td><b>Fear</b></td>
+    <td><b>44</b></td>
+    <td><b>11</b></td>
+    <td><b>55</b></td>
+  </tr>
+  <tr>
+    <td>Happy</td>
+    <td>55</td>
+    <td>14</td>
+    <td>69</td>
+  </tr>
+  <tr>
+    <td><b>Sadness</b></td>
+    <td><b>44</b></td>
+    <td><b>11</b></td>
+    <td><b>55</b></td>
+  </tr>
+  <tr>
+    <td>Surprise</td>
+    <td>65</td>
+    <td>17</td>
+    <td>82</td>
+  </tr>
+</table>
+</center>
+<br>
+
+Using this new training/test data, we observed a decrease in overall accuracy to <b>45.98%.</b> Below is the confusion matrix corresponding with this new split of training and test data:
+
+<center>
+<br>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th colspan="2" rowspan="2"></th>
+    <th colspan="7">Predicted Emotion</th>
+  </tr>
+  <tr>
+    <th>Anger</th>
+    <th>Contempt</th>
+    <th>Disgust</th>
+    <th>Fear</th>
+    <th>Happy</th>
+    <th>Sadness</th>
+    <th>Surprise</th>
+  </tr>
+  <tr>
+    <th rowspan="9">Actual Emotion</th>
+    <th>Anger</td>
+    <td>3</td>
+    <td>0</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Contempt</td>
+    <td>1</td>
+    <td>0</td>
+    <td>2</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <th>Disgust</td>
+    <td>0</td>
+    <td>0</td>
+    <td>11</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Fear</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+    <td>4</td>
+    <td>0</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <th>Happy</td>
+    <td>0</td>
+    <td>0</td>
+    <td>3</td>
+    <td>0</td>
+    <td>11</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th>Sadness</td>
+    <td>3</td>
+    <td>1</td>
+    <td>2</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <th>Surprise</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>15</td>
+  </tr>
+</table>
+</center>
+<br>
+
+This significant decrease in accuracy could have been due to a lack of variety in the training data, in spite of the fact that we provided the model with more of it. If the data does not provide new information about the BoW vectors for that emotion, it seems as though the classification will continue to use poor metrics for classifiying different emotions. In fact, the classification may be even poorer because the training data is providing the same BoW vectors repeatedly, causing the classifier to believe that most BoW vectors in that class will have the exact same pattern, just as the data repeats the same vectors again and again. To attempt to alleviate this issue, we tried augmenting the data in a different way.
+
 <!--Provide details about the experimental set up (number of images/videos, number of datasets you experimented with, train/test split if you used machine learning algorithms, etc.). Describe the evaluation metrics you used to evaluate how well your approach is working. Include clear figures and tables, as well as illustrative qualitative examples if appropriate. Be sure to include obvious baselines to see if your approach is doing better than a naive approach (e.g. for classification accuracy, how well would a classifier do that made random decisions?). Also discuss any parameters of your algorithms, and tell us how you set the values of those parameters. You can also show us how the performance varies as you change those parameter values. Be sure to discuss any trends you see in your results, and explain why these trends make sense. Are the results as expected? Why?-->
 
 <h3>Qualitative Results</h3>
 
 <br><br>
-<h4><center>Happy Face Keypoints:</h4></center>
+<h4><center>SIFT Descriptor Examples</h4></center>
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="happyFaceKeypoints.png">
-</div>
-<h4><center>Sadness Face Keypoints:</h4></center>
-<div style="text-align: center;">
 <img style="height: 300px;" alt="" src="sadnessFaceKeypoints.png">
 </div>
+
 <br><br>
-<h4><center>Histogram of Clusters of Descriptors in Each Set (Bag of Words)</h4></center>
+<h4><center>Example of Histograms of Descriptor Clusters (Bag of Words Vectors)</h4></center>
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="happyhistogram20set1.png">
-<img style="height: 300px;" alt="" src="happyhistogram20set2.png">
-<img style="height: 300px;" alt="" src="sadnesshistogram20set3.png">
+<img style="height: 300px;" alt="" src="happyHistogramExampleFinal.png">
+<img style="height: 300px;" alt="" src="sadHistogramExampleFinal.png">
 </div>
 
 <h3>Conclusion and Future Work</h3>
 <!--Conclusion would likely make the same points as the abstract. Discuss any future ideas you have to make your approach better.-->
-Overall, the correlation experiments show that the bag of words histograms created to describe each image can indicate to machine learning models the type of emotion in an image, three sets of images were taken. The next steps would be to calculate the bag of words histograms for all images and then feed them into an SVM machine learning model to train it to identify the emotions in an image. We will also experiment with different number of clusters in the clustering step in order to make the machine learning model more accurate. 
+We demonstrated that human emotion classifcation can be performed with greater than 50% accuracy using BoW vectorization on images to train an SVM model. As is common in machine learning applications, the greatest obstacle faced with this technique was the lack of training data for our SVM model. Data augmentation methods can be helpful with this INSERT MORE INFO ABOUT DATA AUGMENTATION RESULTS
+<br><br>
+For future work, we would recommend gathering more training data for the SVM model in order to get more accurate results for the anger, contempt, fear, and sadness classes. Also, looking into other methods of grouping the SIFT descriptors, such as VLAD (Vector of Locally Aggregated Descriptors), could yield more accurate classification results than BoW did.
 
 <br><br>
 
@@ -291,6 +854,10 @@ Overall, the correlation experiments show that the bag of words histograms creat
 <a href="https://docs.opencv.org/3.4/da/df5/tutorial_py_sift_intro.html">OpenCV Tutorial on SIFT</a>
 
 <br><br>
+
+<a href="midterm_update.html"><h3>Midterm Update</a></h3>
+
+<br>
 
 <a href="project_proposal.html"><h3>Project Proposal</a></h3>
 
