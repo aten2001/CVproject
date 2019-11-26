@@ -65,7 +65,7 @@ Customer feedback is an important mechanism for businesses to continue to improv
 <h3>Approach</h3>
 
 <ol>
-<li><b>CK+ Database:</b> For our experimental setup, we used the CK+ (Extended Cohn-Kanade Dataset) database, which is publicly available. It contains grayscale images of closeups of different people’s faces, with 8 different emotion labels: neutral, sadness, surprise, happiness, fear, anger, contempt and disgust. 
+<li><b>CK+ Database:</b> For our experimental setup, we used the CK+ (Extended Cohn-Kanade Dataset) database, which is publicly available. It contains grayscale images of closeups of different people’s faces, with 8 different emotion labels: neutral, sadness, surprise, happiness, fear, anger, contempt and disgust. We did not use neutral in our classifier, so we only had 7 classes.
 </li>
 <!-- Original Image --> 
 <div style="text-align: center;">
@@ -433,7 +433,7 @@ Because we seemed to be getting a lower overall accuracy due to some classes hav
 </center>
 <br>
 
-Using this new training/test split for emotions with less data available, we observed an increase in overall accuracy to <b>71.15%.</b> Below is the confusion matrix corresponding with this new split of training and test data:
+Using this new training/test split for emotions with less data available, we observed an increase in overall accuracy to <b>73.08%.</b> Below is the confusion matrix corresponding with this new split of training and test data:
 
 <center>
 <br>
@@ -460,24 +460,24 @@ Using this new training/test split for emotions with less data available, we obs
     <td>0</td>
     <td>0</td>
     <td>0</td>
-    <td>1</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <th>Contempt</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
     <td>0</td>
     <td>2</td>
   </tr>
   <tr>
-    <th>Disgust</td>
+    <th>Contempt</td>
     <td>1</td>
     <td>0</td>
-    <td>10</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <th>Disgust</td>
+    <td>0</td>
+    <td>0</td>
+    <td>11</td>
     <td>0</td>
     <td>1</td>
     <td>0</td>
@@ -485,11 +485,11 @@ Using this new training/test split for emotions with less data available, we obs
   </tr>
   <tr>
     <th>Fear</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
     <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
     <td>0</td>
     <td>1</td>
   </tr>
@@ -505,13 +505,13 @@ Using this new training/test split for emotions with less data available, we obs
   </tr>
   <tr>
     <th>Sadness</td>
-    <td>1</td>
+    <td>2</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
-    <td>1</td>
+    <td>0</td>
   </tr>
   <tr>
     <th>Surprise</td>
@@ -527,7 +527,7 @@ Using this new training/test split for emotions with less data available, we obs
 </center>
 <br>
 
-Though we observed an increase in the overall accuracy of our classifier, we knew that we were still not training or testing on many samples for the emotions with less data available. So, we next tried to increase the amount of training data we had available using data augmentation.
+Though we observed an increase in the overall accuracy of our classifier, this increase seems to be due to the fact that there is less test data than before for the emotions with fewer images available. This lack of test data resulted in fewer misclassifications simply because there was less data to be classified, as can be seen by the fact that the class-specific accuracies are similar to those in the previous test. So, to try to increase the class-specific accuracies, we next tried to increase the amount of training data we had available using data augmentation.
 
 <h4><u>Test 4: k = 500, 80/20 training/test data, data augmentation: repeated training images</u></h4>
 
