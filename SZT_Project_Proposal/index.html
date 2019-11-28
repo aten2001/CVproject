@@ -705,8 +705,77 @@ This significant decrease in accuracy could have been due to a lack of variety i
 
 <h3>Conclusion and Future Work</h3>
 <!--Conclusion would likely make the same points as the abstract. Discuss any future ideas you have to make your approach better.-->
-We demonstrated that human emotion classifcation can be performed with greater than 50% accuracy using BoW vectorization on images to train an SVM model. As is common in machine learning applications, the greatest obstacle faced with this technique was the lack of training data for our SVM model. Data augmentation methods can be helpful with this INSERT MORE INFO ABOUT DATA AUGMENTATION RESULTS
+We demonstrated that human emotion classifcation can be performed with greater than 50% accuracy using BoW vectorization on images to train an SVM model. 
+<br>
+Our best model achieved an accuracy of <b>73.08%</b> on test data.
+Following table shows the the class-wise Precision and Recall.
+
+
 <br><br>
+<center>
+<table style="width:100%">
+  <table border="1">
+  <tr>
+    <th>Emotion</th> 
+    <th>Precision</th>
+    <th>Recall</th> 
+    <th>F1-score</th> 
+  </tr>
+  <tr>
+    <td>Anger</td>
+    <td>14.3</td>
+    <td>33.33</td> 
+    <td>20</td> 
+  </tr>
+  <tr>
+    <td>Contempt</td>
+    <td>0</td>
+    <td>0</td> 
+    <td>0</td> 
+  </tr>
+  <tr>
+    <td>Disgust</td>
+    <td>78.6</td>
+    <td><font color="blue">91.7</font></td> 
+    <td><font color="blue">84.6</font></td> 
+  </tr>
+  <tr>
+    <td>Fear</td>
+    <td>0</td>
+    <td>0</td> 
+    <td>0</td> 
+  </tr>
+  
+  <tr>
+    <td>Happy</td>
+    <td><font color="blue">91.7</font></td>
+    <td>78.6</td> 
+    <td><font color="blue">84.6</font></td> 
+  </tr>
+  
+  <tr>
+    <td>Sad</td>
+    <td>0</td>
+    <td>0</td> 
+    <td>0</td> 
+  </tr>
+  
+  <tr>
+    <td>Surprise</td>
+    <td>79.0</td>
+    <td>88.2</td> 
+    <td>83.33</td> 
+  </tr>
+  
+  
+</table>
+</center>
+<br><br>
+Classes 'Disgust' and 'Happy' were found to have the highest F1-score, indicating best recognition rate.
+It was observed that the F1-score for some classes was zero due to insufficient training data. 
+<br>
+As is common in machine learning applications, the greatest obstacle faced with this technique was the lack of training data for our SVM model. Data augmentation methods can be helpful to deal with class imbalance problem. 
+<br>
 For future work, we would recommend gathering more training data for the SVM model in order to get more accurate results for the anger, contempt, fear, and sadness classes. Also, looking into other methods of grouping the SIFT descriptors, such as VLAD (Vector of Locally Aggregated Descriptors), could yield more accurate classification results than BoW did.
 
 <br><br>
