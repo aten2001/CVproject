@@ -772,7 +772,8 @@ Following table shows the the class-wise Precision ,Recall and F1-scores.
 </center>
 <br><br>
 Classes 'Disgust' and 'Happy' were found to have the highest F1-score, indicating best recognition rate.
-It was observed that the F1-score for some classes was zero due to insufficient training data. 
+It was observed that the F1-score for some classes was zero due to insufficient training data.
+Overall, we were able to classify 'Disgust', 'Happy'. and 'Surprise' very well. These classes all had greater than 47 images in their training set. For the other classes, most had around 20 images in their training set, with only anger having 42 training set images. This seems to indicate that as previously mentioned, the lower F1 scores were due to the insufficient training data, and a cutoff for sufficient amount of data is probably around 47 images.
 <br>
 As is common in machine learning applications, the greatest obstacle faced with this technique was the lack of training data for our SVM model. Data augmentation methods can be helpful to deal with class imbalance problem. 
 <br>
