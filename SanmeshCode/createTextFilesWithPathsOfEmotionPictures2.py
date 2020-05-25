@@ -3,6 +3,8 @@ import string
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+percOfImagesTaken = 0.3
+percTest = 0.25
 #emotionRoot = os.path.abspath("Emotion_labels/Emotion").replace('PythonApplication1\\','')
 #imageRoot = os.path.abspath("cohn-kanade-images").replace('PythonApplication1\\','')
 emotionRoot = "C:/Users/sanme/Documents/CVproject-master/CVproject-master/Emotion_labels/Emotion"
@@ -31,41 +33,58 @@ for path, subdirs, files in os.walk(emotionRoot):
 ##        if (len(happyList) > 20) and (len(sadnessList) > 20):
 ##            print(len(happyList))
 ##            break
-        print("name: ", name)
+##        print("name: ", name)
         filePath = os.path.join(path, name)
         f = open(filePath, "r")
         emotionLabel = f.readline()
         emotionLabel = emotionLabel.translate({ord(c): None for c in string.whitespace})
         emotionLabel = int(emotionLabel[0])
-        if emotionLabel == 1: #anger
-            picPath = convertFileNameToPicPath(name)
-            angerList.append(picPath)
-        elif emotionLabel == 2: #contempt
-            picPath = convertFileNameToPicPath(name)
-            contemptList.append(picPath)
-        elif emotionLabel == 3: #disgust
-            picPath = convertFileNameToPicPath(name)
-            disgustList.append(picPath)
-        elif emotionLabel == 4: #fear
-            picPath = convertFileNameToPicPath(name)
-            fearList.append(picPath)
-        elif emotionLabel == 5: #happy
-            picPath = convertFileNameToPicPath(name)
-            happyList.append(picPath)
-        elif emotionLabel == 6: #sadness
-            picPath = convertFileNameToPicPath(name)
-            sadnessList.append(picPath)
-        elif emotionLabel == 7: #surprise
-            picPath = convertFileNameToPicPath(name)
-            surpriseList.append(picPath)
+
+        picPath = convertFileNameToPicPath(name)
+        numberOfImages = int(int((picPath.split('_')[-1])[0:-4])*percOfImagesTaken)
+        for i in range(numberOfImages):
+            num = int((picPath.split('_')[-1])[0:-4])-i
+            num = str(num).zfill(8)
+            newPath = picPath[0:-12] + num+'.png'
+            angerList.append(newPath)
+##            print(newPath)
+            if emotionLabel == 1: #anger
+##                picPath = convertFileNameToPicPath(name)
+                angerList.append(newPath)
+            elif emotionLabel == 2: #contempt
+##                picPath = convertFileNameToPicPath(name)
+                contemptList.append(newPath)
+            elif emotionLabel == 3: #disgust
+##                picPath = convertFileNameToPicPath(name)
+                disgustList.append(newPath)
+            elif emotionLabel == 4: #fear
+##                picPath = convertFileNameToPicPath(name)
+                fearList.append(newPath)
+            elif emotionLabel == 5: #happy
+##                picPath = convertFileNameToPicPath(name)
+                happyList.append(newPath)
+            elif emotionLabel == 6: #sadness
+##                picPath = convertFileNameToPicPath(name)
+                sadnessList.append(newPath)
+            elif emotionLabel == 7: #surprise
+##                picPath = convertFileNameToPicPath(name)
+                surpriseList.append(newPath)
         f.close()
 ##    if (len(happyList) > 20) and (len(sadnessList) > 20):
 ##        break
 file1 = open("anger.txt","w")
-for element in angerList:
-     file1.write(element)
-     file1.write('\n')
+file2 = open("angerTest.txt","w")
+testNum = int(len(angerList)*percTest)
+print("len(angerList)", angerList)
+print("testNum", testNum)
+for i in range(len(angerList)):
+    if i < testNum:
+        file2.write(angerList[i])
+    else:
+        file1.write(angerList[i])
+    file1.write('\n')
 file1.close() #to change file access modes
+file2.close() #to change file access modes
 file1 = open("contempt.txt","w")
 for element in contemptList:
      file1.write(element)
@@ -98,14 +117,14 @@ for element in surpriseList:
 file1.close() #to change file access modes
 
 
-print("happyList")
-print(happyList)
-print("sadnessList")
-print(sadnessList)
-happyIm = loadIm(happyList[0])
-plt.figure(1)
-plt.imshow(happyIm)
-sadnessIm = loadIm(sadnessList[0])
-plt.figure(2)
-plt.imshow(sadnessIm)
-plt.show()
+##print("happyList")
+##print(happyList)
+##print("sadnessList")
+##print(sadnessList)
+##happyIm = loadIm(happyList[0])
+##plt.figure(1)
+##plt.imshow(happyIm)
+##sadnessIm = loadIm(sadnessList[0])
+##plt.figure(2)
+##plt.imshow(sadnessIm)
+##plt.show()
