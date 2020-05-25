@@ -12,7 +12,7 @@ Course Project for CS 6476
   <meta name="author" content="">
 
 <!-- Le styles -->  
-  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/css/bootstrap.css" rel="stylesheet">
 <style>
 body {
 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -25,7 +25,7 @@ color: #FF9900;
 }
 </style>
   
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/css/bootstrap-responsive.min.css" rel="stylesheet">
 
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -53,7 +53,7 @@ The goal of our project is to create a human emotion classifier for headshot ima
 <br><br>
 <!-- Main Illustrative Figure --> 
 <div style="text-align: center;">
-<img style="height: 400px;" alt="" src="mainfig.jpeg">
+<img style="height: 400px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/mainfig.jpeg">
 </div>
 
 <br><br>
@@ -72,7 +72,7 @@ Customer feedback is an important mechanism for businesses to continue to improv
 </li>
 <!-- Original Image --> 
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="originalImage.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/originalImage.png">
 </div>
 <br>
 
@@ -83,7 +83,7 @@ For the image preprocessing step where faces are cropped and normalized, we expl
 <br><br>
 <!-- Cropped Image --> 
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="faceCroppedImage.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/faceCroppedImage.png">
 </div>
 <br>
 </li>
@@ -92,7 +92,7 @@ For the image preprocessing step where faces are cropped and normalized, we expl
 <br><br>
 <!-- SIFT Keypoints Image --> 
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="siftKeypointsImage.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/siftKeypointsImage.png">
 </div>
 <br>
 </li>
@@ -102,7 +102,7 @@ It should be noted that the histogram below only has five clusters, but the fina
 
 <!-- Happy Histogram --> 
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="histogramHappy.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/histogramHappy.png">
 </div>
 <br>
 </li>
@@ -695,15 +695,15 @@ This significant decrease in accuracy could have been due to a lack of variety i
 <br><br>
 <h4><center>SIFT Descriptor Examples</h4></center>
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="happyFaceKeypoints.png">
-<img style="height: 300px;" alt="" src="sadnessFaceKeypoints.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/happyFaceKeypoints.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/sadnessFaceKeypoints.png">
 </div>
 
 <br><br>
 <h4><center>Example of Histograms of Descriptor Clusters (Bag of Words Vectors)</h4></center>
 <div style="text-align: center;">
 <img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/happyHistogramExampleFinal.png">
-<img style="height: 300px;" alt="" src="sadHistogramExampleFinal.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/sadHistogramExampleFinal.png">
 </div>
 
 <h3>Conclusion and Future Work</h3>
@@ -794,11 +794,11 @@ For future work, we would recommend gathering more training data for the SVM mod
 
 <br><br>
 
-<a href="midterm_update.html"><h3>Midterm Update</a></h3>
+<a href="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/midterm_update.html"><h3>Midterm Update</a></h3>
 
 <br>
 
-<a href="project_proposal.html"><h3>Project Proposal</a></h3>
+<a href="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/project_proposal.html"><h3>Project Proposal</a></h3>
 
 <br><br>
   <hr>
