@@ -702,7 +702,7 @@ This significant decrease in accuracy could have been due to a lack of variety i
 <br><br>
 <h4><center>Example of Histograms of Descriptor Clusters (Bag of Words Vectors)</h4></center>
 <div style="text-align: center;">
-<img style="height: 300px;" alt="" src="happyHistogramExampleFinal.png">
+<img style="height: 300px;" alt="" src="Udhayakumar_Sanmeshkumar_ProjectUpdate_Final/SZT_Project_Proposal/happyHistogramExampleFinal.png">
 <img style="height: 300px;" alt="" src="sadHistogramExampleFinal.png">
 </div>
 
