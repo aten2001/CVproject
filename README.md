@@ -38,7 +38,7 @@ color: #FF9900;
 
 <!-- Title and Name --> 
 <h1>Human Emotion Classifier</h1> 
-<span style="font-size: 20px; line-height: 1.5em;"><strong>Tarushree Gandhi: 903527176, Zayra Lobo: 903054233, Sanmeshkumar Udhayakumar: 902969263</strong></span><br>
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Tarushree Gandhi, Zayra Lobo, Sanmeshkumar Udhayakumar</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Fall 2019 CS 6476 Computer Vision: Class Project</span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
 <hr>
