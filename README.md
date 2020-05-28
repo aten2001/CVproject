@@ -1,5 +1,5 @@
 # CVproject
-Course Project for CS 6476
+Human Emotion Detection Course Project for CS 6476.
 
 <!DOCTYPE html>
 <html lang="en"><head>  
